@@ -1,4 +1,6 @@
 using System;
+using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TrainingPrep.collections
@@ -14,7 +16,7 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies()
         {
-            return movies.OneAtATime();
+            return new ReadOnlySet(movies);
         }
 
         public void add(Movie movie)
@@ -25,6 +27,26 @@ namespace TrainingPrep.collections
                     return;
             }
             movies.Add(movie);
+        }
+    }
+
+    public class ReadOnlySet : IEnumerable<Movie>
+    {
+        private readonly IEnumerable<Movie> _movies;
+
+        public ReadOnlySet(IEnumerable<Movie> movies)
+        {
+            _movies = movies;
+        }
+
+        public IEnumerator<Movie> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
