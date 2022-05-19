@@ -59,14 +59,14 @@ namespace TrainingPrep.collections
             return AllThatSatisfy(movie => movie.genre == Genre.action);
         }
 
-        public IEnumerable<Movie> all_movies_published_after(int i)
+        public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            return AllThatSatisfy(movie => movie.date_published.Year > i);
+            return AllThatSatisfy(movie => movie.date_published.Year > year);
         }
 
-        public IEnumerable<Movie> all_movies_published_between_years(int i, int i1)
+        public IEnumerable<Movie> all_movies_published_between_years(int startYear, int endYear)
         {
-            return AllThatSatisfy(movie => movie.date_published.Year >= i && movie.date_published.Year <= i1);
+            return AllThatSatisfy(movie => movie.date_published.Year >= startYear && movie.date_published.Year <= endYear);
         }
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
@@ -81,9 +81,9 @@ namespace TrainingPrep.collections
             return AllThatSatisfy(movie => movie.production_studio != ProductionStudio.Pixar);
         }
 
-        public IEnumerable<Movie> all_kid_movies_published_after(int i)
+        public IEnumerable<Movie> all_kid_movies_published_after(int year)
         {
-            return AllThatSatisfy(movie => movie.genre == Genre.kids && movie.date_published.Year > i);
+            return AllThatSatisfy(movie => movie.genre == Genre.kids && movie.date_published.Year > year);
         }
 
         public IEnumerable<Movie> all_horror_or_action()
