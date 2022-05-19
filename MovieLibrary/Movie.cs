@@ -41,9 +41,9 @@ namespace TrainingPrep.collections
         public int rating { get; set; }
         public DateTime date_published { get; set; }
 
-        public static Predicate<Movie> IsOfGenre(params Genre[] genre)
+        public static Criteria<Movie> IsOfGenre(params Genre[] genre)
         {
-            return movie => ((IList)genre).Contains(movie.genre);
+            return new GenreCriteria(genre);
         }
 
         public static Criteria<Movie> IsPublishedAfter(int year)
@@ -51,14 +51,46 @@ namespace TrainingPrep.collections
             return new PublishedAfterCriteria(year);
         }
 
-        public static Predicate<Movie> IsPublishedBetween(int startYear, int endYear)
+        public static Criteria<Movie> IsPublishedBetween(int startYear, int endYear)
         {
-            return movie => movie.date_published.Year >= startYear && movie.date_published.Year <= endYear;
+            return new PublishedBetweenCriteria(startYear, endYear);
         }
 
         public static Predicate<Movie> IsPublishedNotBy(ProductionStudio productionStudio)
         {
             return movie => movie.production_studio != productionStudio;
+        }
+    }
+
+    public class GenreCriteria : Criteria<Movie>
+    {
+        private readonly Genre[] _genre;
+
+        public GenreCriteria(Genre[] genre)
+        {
+            _genre = genre;
+        }
+
+        public bool IsSatisfiedBy(Movie movie)
+        {
+            return ((IList)_genre).Contains(movie.genre);
+        }
+    }
+
+    public class PublishedBetweenCriteria : Criteria<Movie>
+    {
+        private readonly int _startYear;
+        private readonly int _endYear;
+
+        public PublishedBetweenCriteria(int startYear, int endYear)
+        {
+            _startYear = startYear;
+            _endYear = endYear;
+        }
+
+        public bool IsSatisfiedBy(Movie movie)
+        {
+            return movie.date_published.Year >= _startYear && movie.date_published.Year <= _endYear;
         }
     }
 
