@@ -84,7 +84,8 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_MGM_or_comedy()
         {
-            throw new NotImplementedException();
+            return movies.ThatSatisfy(new Alternative(Movie.IsOfGenre(Genre.comedy),
+                Movie.IsProducedBy(ProductionStudio.MGM)));
         }
     }
 }
