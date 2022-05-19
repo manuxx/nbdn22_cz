@@ -111,14 +111,16 @@ namespace TrainingPrep.collections
 
     public class ProductionStudioCriteria : Criteria<Movie>
     {
+        private readonly ProductionStudio _studio;
+
         public ProductionStudioCriteria(ProductionStudio studio)
         {
-            throw new NotImplementedException();
+            _studio = studio;
         }
 
-        public bool IsSatisfiedBy(Movie item)
+        public bool IsSatisfiedBy(Movie movie)
         {
-            throw new NotImplementedException();
+            return movie.production_studio == _studio;
         }
     }
 }
