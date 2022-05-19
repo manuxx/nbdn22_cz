@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using TrainingPrep.collections;
 
 public static class EnumerableHelper
@@ -14,11 +15,7 @@ public static class EnumerableHelper
 
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
     {
-        foreach (var item in items)
-        {
-            if (condition(item))
-                yield return item;
-        }
+        return items.ThatSatisfy(new AnonymousCriteria<TItem>(condition));
     }
 
     public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> items, Criteria<TItem> criteria)
@@ -28,6 +25,19 @@ public static class EnumerableHelper
             if (criteria.IsSatisfiedBy(item))
                 yield return item;
         }
+    }
+}
+
+public class AnonymousCriteria<TItem> : Criteria<TItem>
+{
+    public AnonymousCriteria(Predicate<TItem> condition)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsSatisfiedBy(TItem item)
+    {
+        throw new NotImplementedException();
     }
 }
 
