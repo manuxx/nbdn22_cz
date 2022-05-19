@@ -30,7 +30,7 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            return movies.ThatSatisfy(movie => movie.production_studio == ProductionStudio.Pixar);
+            return movies.ThatSatisfy(Movie.IsProducedBy(ProductionStudio.Pixar));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
@@ -42,7 +42,7 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            return movies.ThatSatisfy(movie => movie.genre == Genre.kids);
+            return movies.ThatSatisfy(Movie.IsOfGenre(Genre.kids));
         }
 
         public IEnumerable<Movie> all_action_movies()
@@ -80,6 +80,11 @@ namespace TrainingPrep.collections
         public IEnumerable<Movie> all_horror_or_action()
         {
             return movies.ThatSatisfy(Movie.IsOfGenre(Genre.action, Genre.horror));
+        }
+
+        public IEnumerable<Movie> all_MGM_or_comedy()
+        {
+            throw new NotImplementedException();
         }
     }
 }
