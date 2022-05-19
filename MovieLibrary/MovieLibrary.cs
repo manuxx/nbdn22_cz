@@ -46,24 +46,22 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            return AllThatSatisfy(x => x.genre == Genre.kids);
+            return AllThatSatisfy(Movie.IsOfGenres(Genre.kids));
         }
-
+        
         public IEnumerable<Movie> all_action_movies()
         {
-            return AllThatSatisfy(x => x.genre == Genre.action);
+            return AllThatSatisfy(Movie.IsOfGenres(Genre.action));
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            return AllThatSatisfy(x => x.date_published.Year > year);
+            return AllThatSatisfy(Movie.IsPublishedAfter(year));
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int start_year, int end_year)
         {
-            return AllThatSatisfy(x => 
-                x.date_published.Year >= start_year &&
-                x.date_published.Year <= end_year);
+            return AllThatSatisfy(Movie.IsPublishedBetween(start_year, end_year));
         }
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
@@ -85,11 +83,10 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_horror_or_action()
         {
-            return AllThatSatisfy(x => x.genre == Genre.horror ||
-                x.genre == Genre.action);
+            return AllThatSatisfy(Movie.IsOfGenres(Genre.horror, Genre.action));
         }
 
-        private IEnumerable<Movie> AllThatSatisfy(Func<Movie, bool> filterAction)
+        private IEnumerable<Movie> AllThatSatisfy(Predicate<Movie> filterAction)
         {
             foreach (var movie in movies)
             {
