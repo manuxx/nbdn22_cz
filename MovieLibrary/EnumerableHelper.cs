@@ -30,14 +30,16 @@ public static class EnumerableHelper
 
 public class AnonymousCriteria<TItem> : Criteria<TItem>
 {
+    private readonly Predicate<TItem> _condition;
+
     public AnonymousCriteria(Predicate<TItem> condition)
     {
-        throw new NotImplementedException();
+        _condition = condition;
     }
 
     public bool IsSatisfiedBy(TItem item)
     {
-        throw new NotImplementedException();
+        return _condition(item);
     }
 }
 
