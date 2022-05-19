@@ -30,7 +30,7 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            return AllThatSatisfy(movie => movie.production_studio == ProductionStudio.Pixar);
+            return movies.ThatSatisfy(movie => movie.production_studio == ProductionStudio.Pixar);
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
@@ -42,53 +42,44 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            return AllThatSatisfy(movie => movie.genre == Genre.kids);
-        }
-
-        private IEnumerable<Movie> AllThatSatisfy(Predicate<Movie> condition)
-        {
-            foreach (var movie in movies)
-            {
-                if (condition(movie))
-                    yield return movie;
-            }
+            return movies.ThatSatisfy(movie => movie.genre == Genre.kids);
         }
 
         public IEnumerable<Movie> all_action_movies()
         {
-            return AllThatSatisfy(Movie.IsOfGenre(Genre.action));
+            return movies.ThatSatisfy(Movie.IsOfGenre(Genre.action));
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            return AllThatSatisfy(Movie.IsPublishedAfter(year));
+            return movies.ThatSatisfy(Movie.IsPublishedAfter(year));
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int startYear, int endYear)
         {
-            return AllThatSatisfy(Movie.IsPublishedBetween(startYear, endYear));
+            return movies.ThatSatisfy(Movie.IsPublishedBetween(startYear, endYear));
         }
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
         {
-            return AllThatSatisfy(movie =>
+            return movies.ThatSatisfy(movie =>
                 movie.production_studio == ProductionStudio.Pixar ||
                 movie.production_studio == ProductionStudio.Disney);
         }
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
-            return AllThatSatisfy(Movie.IsPublishedNotBy(ProductionStudio.Pixar));
+            return movies.ThatSatisfy(Movie.IsPublishedNotBy(ProductionStudio.Pixar));
         }
 
         public IEnumerable<Movie> all_kid_movies_published_after(int year)
         {
-            return AllThatSatisfy(movie => movie.genre == Genre.kids && movie.date_published.Year > year);
+            return movies.ThatSatisfy(movie => movie.genre == Genre.kids && movie.date_published.Year > year);
         }
 
         public IEnumerable<Movie> all_horror_or_action()
         {
-            return AllThatSatisfy(Movie.IsOfGenre(Genre.action, Genre.horror));
+            return movies.ThatSatisfy(Movie.IsOfGenre(Genre.action, Genre.horror));
         }
     }
 }
