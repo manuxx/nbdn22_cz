@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace TrainingPrep.collections
 {
@@ -41,21 +40,24 @@ namespace TrainingPrep.collections
         public int rating { get; set; }
         public DateTime date_published { get; set; }
 
-        public static Predicate<Movie> IsOfGenres(params Genre[] genres)
+        public static ICriteria<Movie> IsOfGenre(params Genre[] genres)
         {
-            return x => ((IList<Genre>)genres).Contains(x.genre);
+            return new GenreCriteria(genres);
+        }
+        
+        public static ICriteria<Movie> IsProducedBy(params ProductionStudio[] studio)
+        {
+            return new ProductionStudioCriteria(studio);
         }
 
-        public static Predicate<Movie> IsPublishedAfter(int year)
+        public static ICriteria<Movie> IsPublishedAfter(int year)
         {
-            return x => x.date_published.Year > year;
+            return new PublishAfterCriteria(year);
         }
 
-        public static Predicate<Movie> IsPublishedBetween(int start_year, int end_year)
+        public static ICriteria<Movie> IsPublishedBetween(int start_year, int end_year)
         {
-            return x => 
-                x.date_published.Year >= start_year &&
-                x.date_published.Year <= end_year;
+            return new PublishedBetweenCriteria(start_year, end_year);
         }
     }
 }
