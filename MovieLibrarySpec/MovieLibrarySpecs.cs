@@ -238,6 +238,17 @@ namespace TrainingPrep.specs
                 results.ShouldNotContain(cars, a_bugs_life);
             };
 
+            private It should_be_able_to_be_predictable = () =>
+            {
+                var fepWithNegation = Where<Movie>.HasAn(m => m.production_studio).Not();
+                var criteria = fepWithNegation.EqualTo(ProductionStudio.Pixar);
+                var results = subject.all_movies().ThatSatisfy(criteria);
+                
+                var criteria1 = fepWithNegation.Not().EqualTo(ProductionStudio.Disney);
+
+                results.ShouldNotContain(cars, a_bugs_life);
+            };
+
             It should_be_able_to_find_recient_kid_movies = () =>
             {
                 var results = subject.all_kid_movies_published_after(2003);
