@@ -181,7 +181,7 @@ namespace TrainingPrep.specs
 
             private It should_be_able_to_find_all_kid_movies = () =>
             {
-                var criteria = Where<Movie>.HasAn(m => m.genre).EqualTo(Genre.kids); 
+                Criteria<Movie> criteria = Where_Movie.HasAn(m => m.genre).EqualTo(Genre.kids); 
                 var results = subject.all_movies().ThatSatisfy(criteria);
                 results.ShouldContainOnly(a_bugs_life, shrek, cars);
             };
@@ -346,5 +346,31 @@ namespace TrainingPrep.specs
         }
 
 
+    }
+}
+
+namespace TrainingPrep.specs.MovieLibrarySpecs
+{
+    internal class Where_Movie
+    {
+        public static CriteriaBuilder HasAn(Func<Movie, Genre> selector)
+        {
+            return new CriteriaBuilder(selector);
+        }
+    }
+
+    internal class CriteriaBuilder
+    {
+        private readonly Func<Movie, Genre> _selector;
+
+        public CriteriaBuilder(Func<Movie, Genre> selector)
+        {
+            _selector = selector;
+        }
+
+        public Criteria<Movie> EqualTo(Genre genre)
+        {
+            return new AnonymousCriteria<Movie>(movie => _selector(movie).Equals(genre));
+        }
     }
 }
