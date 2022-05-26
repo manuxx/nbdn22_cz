@@ -199,7 +199,7 @@ namespace TrainingPrep.specs
 
             private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
             {
-                var criteria = Where<Movie>.HasComparable(m => m.date_published.Year).GreaterThan(2004);
+                var criteria = Where<Movie>.HasAn(m => m.date_published.Year).GreaterThan(2004);
                 var results = subject.all_movies().ThatSatisfy(criteria);
 
                 results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
@@ -355,42 +355,4 @@ namespace TrainingPrep.specs
 
 namespace TrainingPrep.specs.MovieLibrarySpecs
 {
-    internal class Where<TItem>
-    {
-        public static ComparableCriteriaBuilder<TItem, TProperty> HasComparable<TProperty>(Func<TItem, TProperty> selector) where TProperty : IComparable<TProperty>
-        {
-            return new ComparableCriteriaBuilder<TItem, TProperty>(selector);
-        }
-        public static CriteriaBuilder<TItem, TProperty> HasAn<TProperty>(Func<TItem, TProperty> selector) 
-        {
-            return new CriteriaBuilder<TItem, TProperty>(selector);
-        }
-    }
-
-    internal class CriteriaBuilder<TItem, TProperty> 
-    {
-        protected Func<TItem, TProperty> _selector;
-
-        public CriteriaBuilder(Func<TItem, TProperty> selector)
-        {
-            _selector = selector;
-        }
-
-        public Criteria<TItem> EqualTo(TProperty value)
-        {
-            return new AnonymousCriteria<TItem>(movie => _selector(movie).Equals(value));
-        }
-    }
-
-    internal class ComparableCriteriaBuilder<TItem, TProperty> : CriteriaBuilder<TItem, TProperty> where TProperty : IComparable<TProperty>
-    {
-        public ComparableCriteriaBuilder(Func<TItem, TProperty> selector) : base(selector)
-        {
-        }
-
-        public Criteria<TItem> GreaterThan(TProperty value)
-        {
-            return new AnonymousCriteria<TItem>(movie => _selector(movie).CompareTo(value)>0);
-        }
-    }
 }
