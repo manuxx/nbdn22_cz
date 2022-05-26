@@ -220,10 +220,13 @@ namespace TrainingPrep.specs
                 results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, a_bugs_life, pirates_of_the_carribean);
             };
 
-           
-            It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
+
+            private It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
             {
-                var results = subject.all_movies_published_by_pixar_or_disney();
+                var criteria = Where<Movie>.HasAn(m => m.production_studio).EqualTo(ProductionStudio.Disney)
+                    .Or().HasAn(m => m.production_studio).EqualTo(ProductionStudio.Pixar);
+
+                var results = subject.all_movies().ThatSatisfy(criteria);
 
                 results.ShouldContainOnly(a_bugs_life, pirates_of_the_carribean, cars);
             };
