@@ -1,6 +1,6 @@
 using System;
 
-namespace TrainingPrep.specs.MovieLibrarySpecs
+namespace TrainingPrep.collections
 {
     public class Where<TItem>
     {
