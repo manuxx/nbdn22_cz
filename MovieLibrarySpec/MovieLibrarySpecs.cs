@@ -179,10 +179,10 @@ namespace TrainingPrep.specs
                 results.ShouldContainOnly(cars, a_bugs_life);
             };
 
-            It should_be_able_to_find_all_kid_movies = () =>
+            private It should_be_able_to_find_all_kid_movies = () =>
             {
-                var results = subject.all_kid_movies();
-
+                var criteria = Where<Movie>.HasAn(m => m.genre).EqualTo(Genre.kids); 
+                var results = subject.all_movies().ThatSatisfy(criteria);
                 results.ShouldContainOnly(a_bugs_life, shrek, cars);
             };
 
