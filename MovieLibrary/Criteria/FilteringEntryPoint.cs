@@ -5,18 +5,21 @@ namespace TrainingPrep.collections
     public class FilteringEntryPoint<TItem, TProperty> 
     {
         public readonly Func<TItem, TProperty> _selector;
-        public bool _negation;
+        public readonly bool _negation;
 
-        public FilteringEntryPoint(Func<TItem, TProperty> selector)
+        public FilteringEntryPoint(Func<TItem, TProperty> selector) : this(selector, false)
+        {
+        }
+
+        private FilteringEntryPoint(Func<TItem, TProperty> selector, bool negation)
         {
             _selector = selector;
-            _negation = false;
+            _negation = negation;
         }
 
         public FilteringEntryPoint<TItem,TProperty> Not()
         {
-            _negation = ! _negation;
-            return this;
+            return new FilteringEntryPoint<TItem, TProperty>(_selector, !_negation);
         }
     }
 }
