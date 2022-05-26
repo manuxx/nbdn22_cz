@@ -172,23 +172,26 @@ namespace TrainingPrep.specs
         [Subject(typeof(MovieLibrary))]
         public class when_searching_for_movies : concern_for_searching_and_sorting
         {
-            It should_be_able_to_find_all_movies_published_by_pixar = () =>
+            private It should_be_able_to_find_all_movies_published_by_pixar = () =>
             {
-                var results = subject.all_movies_published_by_pixar();
+                var criteria = Where<Movie>.HasAn(m => m.production_studio).EqualTo(ProductionStudio.Pixar);
+
+                var results = subject.all_movies().ThatSatisfy(criteria);
 
                 results.ShouldContainOnly(cars, a_bugs_life);
             };
 
             private It should_be_able_to_find_all_kid_movies = () =>
             {
-                Criteria<Movie> criteria = Where_Movie.HasAn(m => m.genre).EqualTo(Genre.kids); 
+                Criteria<Movie> criteria = Where<Movie>.HasAn(m => m.genre).EqualTo(Genre.kids); 
                 var results = subject.all_movies().ThatSatisfy(criteria);
                 results.ShouldContainOnly(a_bugs_life, shrek, cars);
             };
 
-            It should_be_able_to_find_all_action_movies = () =>
+            private It should_be_able_to_find_all_action_movies = () =>
             {
-                var results = subject.all_action_movies();
+                var criteria = Where<Movie>.HasAn(m => m.genre).EqualTo(Genre.action);
+                var results = subject.all_movies().ThatSatisfy(criteria);
 
                 results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
             };
@@ -351,26 +354,26 @@ namespace TrainingPrep.specs
 
 namespace TrainingPrep.specs.MovieLibrarySpecs
 {
-    internal class Where_Movie
+    internal class Where<TItem>
     {
-        public static CriteriaBuilder HasAn(Func<Movie, Genre> selector)
+        public static CriteriaBuilder<TItem, TProperty> HasAn<TProperty>(Func<TItem, TProperty> selector)
         {
-            return new CriteriaBuilder(selector);
+            return new CriteriaBuilder<TItem, TProperty>(selector);
         }
     }
 
-    internal class CriteriaBuilder
+    internal class CriteriaBuilder<TItem, TProperty>
     {
-        private readonly Func<Movie, Genre> _selector;
+        private readonly Func<TItem, TProperty> _selector;
 
-        public CriteriaBuilder(Func<Movie, Genre> selector)
+        public CriteriaBuilder(Func<TItem, TProperty> selector)
         {
             _selector = selector;
         }
 
-        public Criteria<Movie> EqualTo(Genre genre)
+        public Criteria<TItem> EqualTo(TProperty genre)
         {
-            return new AnonymousCriteria<Movie>(movie => _selector(movie).Equals(genre));
+            return new AnonymousCriteria<TItem>(movie => _selector(movie).Equals(genre));
         }
     }
 }
