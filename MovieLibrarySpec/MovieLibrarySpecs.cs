@@ -196,6 +196,13 @@ namespace TrainingPrep.specs
                 results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
             };
 
+            private It should_be_able_to_work_with_double_not = () =>
+            {
+                var criteria = Where<Movie>.HasAn(m => m.genre).Not().Not().EqualTo(Genre.action);
+                var results = subject.all_movies().ThatSatisfy(criteria);
+
+                results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
+            };
 
             private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
             {

@@ -15,7 +15,7 @@ namespace TrainingPrep.collections
 
         public FilteringEntryPoint<TItem,TProperty> Not()
         {
-            _negation = true;
+            _negation = ! _negation;
             return this;
         }
     }
