@@ -357,13 +357,13 @@ namespace TrainingPrep.specs.MovieLibrarySpecs
 {
     internal class Where<TItem>
     {
-        public static CriteriaBuilder<TItem, TProperty> HasAn<TProperty>(Func<TItem, TProperty> selector)
+        public static CriteriaBuilder<TItem, TProperty> HasAn<TProperty>(Func<TItem, TProperty> selector) where TProperty : IComparable<TProperty>
         {
             return new CriteriaBuilder<TItem, TProperty>(selector);
         }
     }
 
-    internal class CriteriaBuilder<TItem, TProperty>
+    internal class CriteriaBuilder<TItem, TProperty> where TProperty : IComparable<TProperty>
     {
         private readonly Func<TItem, TProperty> _selector;
 
@@ -372,9 +372,14 @@ namespace TrainingPrep.specs.MovieLibrarySpecs
             _selector = selector;
         }
 
-        public Criteria<TItem> EqualTo(TProperty genre)
+        public Criteria<TItem> EqualTo(TProperty value)
         {
-            return new AnonymousCriteria<TItem>(movie => _selector(movie).Equals(genre));
+            return new AnonymousCriteria<TItem>(movie => _selector(movie).Equals(value));
+        }
+
+        public Criteria<TItem> GreaterThan(TProperty value)
+        {
+            return new AnonymousCriteria<TItem>(movie => _selector(movie).CompareTo(value)>0);
         }
     }
 }
